@@ -1,19 +1,17 @@
 <template lang="html">
-  <div>
-    <nav-header>
-
-    </nav-header>
+  <div id='homepage'>
+    <h1>Welcome to My Pinterest Clone</h1>
   </div>
 </template>
 
 <script>
-import Header from './partials/Header.vue';
 export default {
-  components: {
-    'nav-header': Header
-  }
+
 };
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
+  #homepage{
+    text-align: center;
+  }
 </style>
