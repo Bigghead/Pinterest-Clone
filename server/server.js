@@ -3,7 +3,12 @@ const bodyParser = require('body-parser');
 const mongoose   = require('mongoose');
 const path       = require('path');
 const Keys       = require('../apiKeys.js');
-const axios = require('axios');
+const axios      = require('axios');
+const jwt        = require('jsonwebtoken');
+const passport   = require("passport");
+const passportJWT = require("passport-jwt");
+const ExtractJwt  = passportJWT.ExtractJwt;
+const JwtStrategy = passportJWT.Strategy;
 
 const app = express();
 
@@ -14,6 +19,25 @@ mongoose.connect(`mongodb://${Keys.mlabUser}:${Keys.mlabPass}@ds113670.mlab.com:
 
 //Model Requires
 const User = require('./models/user.js');
+
+//Passport config
+var jwtOptions = {}
+jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeader();
+jwtOptions.secretOrKey = 'tasmanianDevil';
+
+var strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
+  console.log('payload received', jwt_payload);
+  // usually this would be a database call:
+  User.findOne({id: jwt_payload.id}, function(err, user){
+    if (user) {
+      next(null, user);
+    } else {
+      next(null, false);
+    }
+  });  
+});
+
+passport.use(strategy);
 
 var allowCrossDomain = function(req, res, next) {
 res.header('Access-Control-Allow-Origin', '*');
