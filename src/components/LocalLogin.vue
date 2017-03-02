@@ -1,11 +1,11 @@
 <template lang="html">
-  <div class="">
+  <div class="login">
+    <h2>Log In</h2>
     <form class="" action="index.html" method="post" v-on:submit.prevent="submitForm">
       <input type="text"   placeholder='User Name' v-model="username">
       <input type="text"   placeholder='Password' v-model='password'>
-      <button  >Log In</button>
+      <button  class='waves-effect waves-light red lighten-2 btn'>Log In</button>
     </form>
-    <button type="button" name="button" @click="test">Test</button>
 
   </div>
 </template>
@@ -35,5 +35,14 @@ export default {
 };
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
+
+  .login{
+    margin: auto;
+    color: white;
+    width: 70%;
+    text-align: center;
+  }
+
+  
 </style>

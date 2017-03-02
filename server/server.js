@@ -2,8 +2,12 @@ const express    = require('express');
 const bodyParser = require('body-parser');
 const mongoose   = require('mongoose');
 const path       = require('path');
+const keys       = require('./apiKeys.js');
 
 const app = express();
+
+//mongoose connect
+mongoose.connect(`mongodb://${Keys.mlabUser}:${Keys.mlabPass}@ds113670.mlab.com:13670/pinterest`);
 
 //Model Requires
 const User = require('./models/user.js');
@@ -22,9 +26,9 @@ if ('OPTIONS' == req.method) {
   }
 };
 
+app.use(allowCrossDomain);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(allowCrossDomain);
 
 app.post('/login', (req, res) => {
   console.log(req.body);
