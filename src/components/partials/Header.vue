@@ -5,7 +5,7 @@
         <a href="#" class="brand-logo left">Pinterest Clone</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
           <li><router-link :to="'/login'">Log In</router-link></li>
-          <li><a href="badges.html">All Images</a></li>
+          <li><router-link :to="'/images'">All Images</router-link></li>
         </ul>
       </div>
     </nav>

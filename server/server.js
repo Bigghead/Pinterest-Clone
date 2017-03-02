@@ -2,9 +2,12 @@ const express    = require('express');
 const bodyParser = require('body-parser');
 const mongoose   = require('mongoose');
 const path       = require('path');
-const keys       = require('./apiKeys.js');
+const Keys       = require('../apiKeys.js');
+const axios = require('axios');
 
 const app = express();
+
+mongoose.Promise = global.Promise;
 
 //mongoose connect
 mongoose.connect(`mongodb://${Keys.mlabUser}:${Keys.mlabPass}@ds113670.mlab.com:13670/pinterest`);
@@ -35,8 +38,21 @@ app.post('/login', (req, res) => {
   res.send('Success');
 });
 
-app.get('/test', (req, res) => {
-  res.send('hello');
+app.get('/images', (req, res) => {
+  const images = [];
+  return new Promise((resolve, reject) => {
+    axios.get('https://www.instagram.com/kingjames/media/').then((res) => {
+      const images = [];
+
+      for (let post of res.data.items) {
+                images.push(post.images.standard_resolution.url);
+              }
+        resolve(images);
+      });
+  }).then((images) => {
+    console.log(images);
+    res.send(images);
+  });
 });
 
 
