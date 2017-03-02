@@ -3,13 +3,21 @@
 </template>
 
 <script>
+import Keys from '../../apiKeys.js';
 export default {
   data() {
     return {
       authenticated: false,
       secretThing: '',
-      lock: new Auth0Lock('FXejolznkgCwYhkzb1de2I0muFUZHgne', 'book-trading-app.auth0.com')
-    }
+      lock: new Auth0Lock(Keys.auth0Client, Keys.authDomain,
+        { auth: {
+       redirectUrl: Keys.authCallback,
+       responseType: 'code',
+       params: {
+       scope: 'openid name email picture'
+     }
+   }})
+ };
   },
   ready() {
     var self = this;
