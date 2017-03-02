@@ -1,12 +1,11 @@
 <template lang="html">
   <div class="">
-    <nav>
+    <nav class='deep-purple accent-2'>
       <div class="nav-wrapper">
         <a href="#" class="brand-logo left">Pinterest Clone</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <li><a href="sass.html">Sass</a></li>
-          <li><a href="badges.html">Components</a></li>
-          <li><a href="collapsible.html">JavaScript</a></li>
+          <li><router-link :to="'/login'">Log In</router-link></li>
+          <li><a href="badges.html">All Images</a></li>
         </ul>
       </div>
     </nav>
@@ -15,6 +14,7 @@
 
 <script>
 export default {
+
 }
 </script>
 
