@@ -19,7 +19,7 @@ export default {
    }})
  };
   },
-  ready() {
+  mounted() {
     var self = this;
 
     this.authenticated = checkAuth();

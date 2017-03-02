@@ -12,6 +12,7 @@
     "test": "npm run unit && npm run e2e"
   },
   "dependencies": {
+    "axios": "^0.15.3",
     "body-parser": "^1.17.0",
     "express": "^4.15.0",
     "mongoose": "^4.8.5",
