@@ -11,55 +11,57 @@ export default {
       secretThing: '',
       lock: new Auth0Lock(Keys.auth0Client, Keys.authDomain,
         { auth: {
-       redirectUrl: Keys.authCallback,
-       responseType: 'code',
-       params: {
-       scope: 'openid name email picture'
-     }
-   }})
- };
-  },
-  mounted() {
-    var self = this;
+          redirectUrl: Keys.authCallback,
+          responseType: 'code',
+          params: {
+            scope: 'openid name profile'
+          }
+        }})
+      };
+    },
+    mounted() {
+      var self = this;
 
-    this.authenticated = checkAuth();
+      this.authenticated = this.checkAuth();
 
-    this.lock.on('authenticated', (authResult) => {
-      console.log('authenticated');
-      localStorage.setItem('id_token', authResult.idToken);
-      this.lock.getProfile(authResult.idToken, (error, profile) => {
-        if (error) {
-          // Handle error
-          return;
-        }
-        // Set the token and user profile in local storage
-        localStorage.setItem('profile', JSON.stringify(profile));
+      this.lock.on('authenticated', (authResult) => {
+        console.log('authenticated');
+        localStorage.setItem('id_token', authResult.idToken);
+        this.lock.getProfile(authResult.idToken, (error, profile) => {
+          if (error) {
+            // Handle error
+            return;
+          }
+          // Set the token and user profile in local storage
+          localStorage.setItem('profile', JSON.stringify(profile));
 
-        this.authenticated = true;
+          this.authenticated = true;
+        });
       });
-    });
 
-    this.lock.on('authorization_error', (error) => {
-      // handle error when authorizaton fails
-    });
-  },
-  methods: {
-    login() {
+      this.lock.on('authorization_error', (error) => {
+        // handle error when authorizaton fails
+      });
       this.lock.show();
     },
-    logout() {
-    // To log out, we just need to remove the token and profile
-    // from local storage
-    localStorage.removeItem('id_token');
-    localStorage.removeItem('profile');
-    this.authenticated = false;
-  }
-},
-created(){
-  this.lock.show();
-}
-};
-</script>
+    methods: {
+      logout() {
+        // To log out, we just need to remove the token and profile
+        // from local storage
+        localStorage.removeItem('id_token');
+        localStorage.removeItem('profile');
+        this.authenticated = false;
+      },
+      checkAuth() {
+        return !!localStorage.getItem('id_token');
+      }
+    },
+    created(){
+      this.lock.show();
 
-<style lang="css">
-</style>
+    }
+  };
+  </script>
+
+  <style lang="css">
+  </style>

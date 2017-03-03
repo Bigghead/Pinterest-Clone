@@ -34,9 +34,16 @@ var strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
     } else {
       next(null, false);
     }
-  });  
+  });
 });
 
+// User.create({
+//   username : 'Dodo',
+//   password: 'hello'
+// }, (err, savedUser) => {
+//   if(err) console.log(err);
+//   console.log(savedUser);
+// });
 passport.use(strategy);
 
 var allowCrossDomain = function(req, res, next) {
@@ -57,10 +64,30 @@ app.use(allowCrossDomain);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.post('/login', (req, res) => {
-  console.log(req.body);
-  res.send('Success');
+
+app.post("/login", function(req, res) {
+  if(req.body.name && req.body.password){
+    var name = req.body.name;
+    var password = req.body.password;
+  }
+  // usually this would be a database call:
+  User.findOne({name : name}, (err, user) => {
+    if( ! user ){
+      res.status(401).json({message:"no such user found"});
+    }
+
+    if(user.password === req.body.password) {
+      // from now on we'll identify the user by the id and the id is the only personalized value that goes into our token
+      var payload = {id: user.id};
+      var token = jwt.sign(payload, jwtOptions.secretOrKey);
+      res.json({message: "ok", token: token, user: user});
+    } else {
+      res.status(401).json({message:"passwords did not match"});
+    }
+  });
 });
+
+
 
 app.get('/images', (req, res) => {
   const images = [];
@@ -80,9 +107,8 @@ app.get('/images', (req, res) => {
 });
 
 
-// app.get('*', (req, res) => {
-//   //res.render('index');
-//   res.sendFile(path.join(__dirname , '../index.html'));
-// });
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname , '../index.html'));
+});
 
 app.listen(8000, () => console.log('Pinterest Starting!'));

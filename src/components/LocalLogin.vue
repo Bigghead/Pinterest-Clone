@@ -20,13 +20,12 @@ export default {
     };
   },
   methods:{
-    submitForm(e){
-      console.log(e);
+    submitForm(){
       return axios.post('http://localhost:8000/login',{
         username: this.username,
         password: this.password
       })
-           .then((response) => console.log(response));
+           .then((response) => console.log(response.data));
     },
     test(){
       axios.get('http://localhost:8000/test').then((response) => console.log(response));
@@ -44,5 +43,5 @@ export default {
     text-align: center;
   }
 
-  
+
 </style>
