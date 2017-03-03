@@ -28,7 +28,8 @@ jwtOptions.secretOrKey = 'tasmanianDevil';
 var strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
   console.log('payload received', jwt_payload);
   // usually this would be a database call:
-  User.findOne({id: jwt_payload.id}, function(err, user){
+  User.findOne({_id: jwt_payload.id}, function(err, user){
+    //next(user) will be req.user
     if (user) {
       next(null, user);
     } else {
@@ -61,8 +62,9 @@ if ('OPTIONS' == req.method) {
 };
 
 app.use(allowCrossDomain);
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+
 
 
 app.post("/login", function(req, res) {
@@ -104,6 +106,11 @@ app.get('/images', (req, res) => {
     console.log(images);
     res.send(images);
   });
+});
+
+app.get("/secret", passport.authenticate('jwt', { session: false }), function(req, res){
+  console.log(req.user);
+  res.json("Success! You can not see this without a token");
 });
 
 

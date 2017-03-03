@@ -25,10 +25,20 @@ export default {
         username: this.username,
         password: this.password
       })
-           .then((response) => console.log(response.data));
+           .then((response) => {
+             console.log(response.data);
+             localStorage.setItem('id_token', response.data.token);
+             //redirect to home page
+             this.$router.push('/');
+             });
     },
     test(){
       axios.get('http://localhost:8000/test').then((response) => console.log(response));
+    }
+  },
+  mounted(){
+    if(localStorage.id_token){
+      this.$router.push('/');
     }
   }
 };
