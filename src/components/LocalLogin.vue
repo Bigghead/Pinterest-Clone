@@ -37,7 +37,7 @@ export default {
     }
   },
   mounted(){
-    if(localStorage.id_token){
+    if(localStorage.getItem('id_token')){
       this.$router.push('/');
     }
   }

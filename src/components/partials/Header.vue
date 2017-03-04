@@ -4,7 +4,7 @@
       <div class="nav-wrapper">
         <a href="#" class="brand-logo left">Pinterest Clone</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <template v-if='token'>
+          <template v-if="token">
             <li><router-link :to="'/login'">User</router-link></li>
             <li><router-link :to="'/images'">All Images</router-link></li>
             <li><router-link :to="'/logout'">Log Out</router-link></li>
@@ -27,7 +27,7 @@ export default {
       token: false
     };
   },
-  mounted(){
+  created(){
     if(localStorage.id_token){
       this.token = true;
     }

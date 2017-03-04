@@ -68,24 +68,25 @@ app.use(bodyParser.json());
 
 
 app.post("/login", function(req, res) {
-  if(req.body.name && req.body.password){
-    var name = req.body.name;
+  if(req.body.username && req.body.password){
+    var name = req.body.username;
     var password = req.body.password;
   }
   // usually this would be a database call:
-  User.findOne({name : name}, (err, user) => {
+  User.findOne({username : name}, (err, user) => {
     if( ! user ){
       res.status(401).json({message:"no such user found"});
     }
-
-    if(user.password === req.body.password) {
-      // from now on we'll identify the user by the id and the id is the only personalized value that goes into our token
-      var payload = {id: user.id};
-      var token = jwt.sign(payload, jwtOptions.secretOrKey);
-      res.json({message: "ok", token: token, user: user});
-    } else {
-      res.status(401).json({message:"passwords did not match"});
-    }
+      else {
+        if(user.password === req.body.password) {
+          // from now on we'll identify the user by the id and the id is the only personalized value that goes into our token
+          var payload = {id: user._id};
+          var token = jwt.sign(payload, jwtOptions.secretOrKey);
+          res.json({message: "ok", token: token, user: user});
+        } else {
+          res.status(401).json({message:"passwords did not match"});
+        }
+      }
   });
 });
 
@@ -94,7 +95,7 @@ app.post("/login", function(req, res) {
 app.get('/images', (req, res) => {
   const images = [];
   return new Promise((resolve, reject) => {
-    axios.get('https://www.instagram.com/kingjames/media/').then((res) => {
+    axios.get('https://www.instagram.com/daquan/media/').then((res) => {
       const images = [];
 
       for (let post of res.data.items) {
