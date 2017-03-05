@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Keys from '../../apiKeys.js';
+import Keys from '../../apiKeys';
 export default {
   data() {
     return {

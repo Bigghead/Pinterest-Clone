@@ -30,6 +30,10 @@ export default {
              localStorage.setItem('id_token', response.data.token);
              //redirect to home page
              this.$router.push('/');
+             })
+             .catch((err) => {
+               alertify.error(err.response.data.message);
+               //this.$router.push('/register');
              });
     },
     test(){

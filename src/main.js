@@ -6,6 +6,9 @@ import router from './router'
 
 Vue.config.productionTip = false
 
+//alertify dialog position
+alertify.defaults.notifier.position = 'top-right';
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
