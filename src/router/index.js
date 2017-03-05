@@ -16,7 +16,7 @@ export default new Router({
     },
     {
       path: '/login',
-      component: LocalLogin
+      component: Login
     },
     {
       path: '/images',

@@ -9,6 +9,7 @@ const passport   = require("passport");
 const passportJWT = require("passport-jwt");
 const ExtractJwt  = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
+const Auth0Strategy       = require('passport-auth0');
 
 const app = express();
 
@@ -25,7 +26,9 @@ var jwtOptions = {}
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeader();
 jwtOptions.secretOrKey = 'tasmanianDevil';
 
-var strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
+
+//=========JWT STRATEGY=========
+var jwtStrategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
   console.log('payload received', jwt_payload);
   // usually this would be a database call:
   User.findOne({_id: jwt_payload.id}, function(err, user){
@@ -38,6 +41,36 @@ var strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
   });
 });
 
+//=========AUTH0 STRATEGY=========
+const auth0Strategy = new Auth0Strategy({
+    domain:       Keys.authDomain,
+    clientID:     Keys.auth0Client,
+    clientSecret: Keys.auth0Secret,
+    callbackURL:  Keys.authCallback
+  }, function(accessToken, refreshToken, extraParams, profile, done) {
+    // accessToken is the token to call Auth0 API (not needed in the most cases)
+    // extraParams.id_token has the JSON Web Token
+    // profile has all the information from the user
+    console.log(profile);
+    User.findOne({username: profile.nickname}, function(err, foundUser){
+      if(err){
+        console.log('noob');
+      } else if(foundUser === null){
+        User.create({
+          username: profile.nickname
+        }, function(err, madeUser){
+          if(err){
+            console.log(err);
+          } else {
+            return done(null, madeUser);
+          }
+        });
+      } else {
+        return done(null, foundUser);
+      }
+    });
+  });
+
 // User.create({
 //   username : 'Dodo',
 //   password: 'hello'
@@ -45,7 +78,17 @@ var strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
 //   if(err) console.log(err);
 //   console.log(savedUser);
 // });
-passport.use(strategy);
+passport.use(auth0Strategy);
+passport.use(jwtStrategy);
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
+
 
 var allowCrossDomain = function(req, res, next) {
 res.header('Access-Control-Allow-Origin', '*');
@@ -64,6 +107,7 @@ if ('OPTIONS' == req.method) {
 app.use(allowCrossDomain);
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+app.use(passport.initialize());
 
 
 
@@ -88,6 +132,17 @@ app.post("/login", function(req, res) {
         }
       }
   });
+});
+
+//=========AUTH0 LOGIN=======
+app.get('/auth',
+  passport.authenticate('auth0'), function (req, res) {
+  res.send("nerd");
+});
+
+app.get('/auth/callback',
+  passport.authenticate('auth0'), function (req, res) {
+  res.send("/successful");
 });
 
 

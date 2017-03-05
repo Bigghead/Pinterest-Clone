@@ -4,6 +4,7 @@
 
 <script>
 import Keys from '../../apiKeys';
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -55,10 +56,6 @@ export default {
       checkAuth() {
         return !!localStorage.getItem('id_token');
       }
-    },
-    created(){
-      this.lock.show();
-
     }
   };
   </script>
