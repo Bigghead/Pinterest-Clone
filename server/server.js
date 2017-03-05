@@ -96,7 +96,6 @@ app.get('/images', (req, res) => {
   const images = [];
   return new Promise((resolve, reject) => {
     axios.get('https://www.instagram.com/daquan/media/').then((res) => {
-      const images = [];
 
       for (let post of res.data.items) {
                 images.push(post.images.standard_resolution.url);
@@ -104,7 +103,6 @@ app.get('/images', (req, res) => {
         resolve(images);
       });
   }).then((images) => {
-    console.log(images);
     res.send(images);
   });
 });
