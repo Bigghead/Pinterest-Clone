@@ -4,7 +4,7 @@
 
 <script>
 import Keys from '../../apiKeys';
-import axios from 'axios'
+import axios from 'axios';
 export default {
   data() {
     return {
@@ -21,6 +21,8 @@ export default {
       };
     },
     mounted() {
+      // axios.get('http://localhost:8000/auth/callback');
+      this.lock.show();
       var self = this;
 
       this.authenticated = this.checkAuth();
@@ -43,7 +45,6 @@ export default {
       this.lock.on('authorization_error', (error) => {
         // handle error when authorizaton fails
       });
-      this.lock.show();
     },
     methods: {
       logout() {

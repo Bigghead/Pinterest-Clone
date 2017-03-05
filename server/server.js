@@ -135,14 +135,14 @@ app.post("/login", function(req, res) {
 });
 
 //=========AUTH0 LOGIN=======
-app.get('/auth',
-  passport.authenticate('auth0'), function (req, res) {
-  res.send("nerd");
-});
+// app.get('/auth',
+//   passport.authenticate('auth0'), function (req, res) {
+//   res.send("nerd");
+// });
 
 app.get('/auth/callback',
   passport.authenticate('auth0'), function (req, res) {
-  res.send("/successful");
+  res.json("/successful");
 });
 
 
