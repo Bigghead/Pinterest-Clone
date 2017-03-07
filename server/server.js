@@ -11,6 +11,7 @@ const ExtractJwt  = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
 const Auth0Strategy       = require('passport-auth0');
 const TwitterStrategy     = require('passport-twitter');
+const Session            = require('express-session');
 
 const app = express();
 
@@ -21,6 +22,32 @@ mongoose.connect(`mongodb://${Keys.mlabUser}:${Keys.mlabPass}@ds113670.mlab.com:
 
 //Model Requires
 const User = require('./models/user.js');
+
+var allowCrossDomain = function(req, res, next) {
+res.header('Access-Control-Allow-Origin', '*');
+res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  // intercept OPTIONS method
+if ('OPTIONS' == req.method) {
+    res.sendStatus(200);
+  }
+  else {
+    next();
+  }
+};
+
+
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+app.use(allowCrossDomain);
+app.use(Session({
+  secret: Keys.sessionSecret,
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 //Passport config
 var jwtOptions = {}
@@ -48,13 +75,15 @@ const twitterStrategy = new TwitterStrategy({
     consumerSecret: Keys.twitterSecret,
     callbackURL: "http://localhost:8000/auth/twitter/callback"
   },
-  function(token, tokenSecret, profile, cb) {
-    User.findOne({username: profile.nickname}, function(err, foundUser){
+  function(token, tokenSecret, profile, done) {
+    console.log( profile);
+    User.findOne({username: profile.displayName}, function(err, foundUser){
       if(err){
         console.log('noob');
+        return(done, err);
       } else if(foundUser === null){
         User.create({
-          username: profile.nickname
+          username: profile.displayName
         }, function(err, madeUser){
           if(err){
             console.log(err);
@@ -66,8 +95,7 @@ const twitterStrategy = new TwitterStrategy({
         return done(null, foundUser);
       }
     });
-  }
-});
+  });
 
 //=========AUTH0 STRATEGY=========
 const auth0Strategy = new Auth0Strategy({
@@ -119,27 +147,6 @@ passport.deserializeUser(function(user, done) {
 });
 
 
-var allowCrossDomain = function(req, res, next) {
-res.header('Access-Control-Allow-Origin', '*');
-res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-
-  // intercept OPTIONS method
-if ('OPTIONS' == req.method) {
-    res.sendStatus(200);
-  }
-  else {
-    next();
-  }
-};
-
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(allowCrossDomain);
-
-
 
 app.post("/login", function(req, res) {
   if(req.body.username && req.body.password){
@@ -184,7 +191,7 @@ app.get('/auth/twitter/callback',
   passport.authenticate('twitter', { failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication, redirect home.
-    res.redirect('/');
+    res.redirect('http://localhost:8080/');
   });
 
 app.get('/images', (req, res) => {
