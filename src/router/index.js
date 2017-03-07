@@ -9,6 +9,7 @@ import Register from '../components/Register.vue'
 Vue.use(Router)
 
 export default new Router({
+  history: true,
   routes: [
     {
       path: '/',

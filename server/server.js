@@ -10,6 +10,7 @@ const passportJWT = require("passport-jwt");
 const ExtractJwt  = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
 const Auth0Strategy       = require('passport-auth0');
+const TwitterStrategy     = require('passport-twitter');
 
 const app = express();
 
@@ -41,6 +42,33 @@ var jwtStrategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
   });
 });
 
+//=========TWITTER STRATEGY=====
+const twitterStrategy = new TwitterStrategy({
+    consumerKey: Keys.twitterKey,
+    consumerSecret: Keys.twitterSecret,
+    callbackURL: "http://localhost:8000/auth/twitter/callback"
+  },
+  function(token, tokenSecret, profile, cb) {
+    User.findOne({username: profile.nickname}, function(err, foundUser){
+      if(err){
+        console.log('noob');
+      } else if(foundUser === null){
+        User.create({
+          username: profile.nickname
+        }, function(err, madeUser){
+          if(err){
+            console.log(err);
+          } else {
+            return done(null, madeUser);
+          }
+        });
+      } else {
+        return done(null, foundUser);
+      }
+    });
+  }
+});
+
 //=========AUTH0 STRATEGY=========
 const auth0Strategy = new Auth0Strategy({
     domain:       Keys.authDomain,
@@ -51,7 +79,7 @@ const auth0Strategy = new Auth0Strategy({
     // accessToken is the token to call Auth0 API (not needed in the most cases)
     // extraParams.id_token has the JSON Web Token
     // profile has all the information from the user
-    console.log(profile);
+    // console.log(profile);
     User.findOne({username: profile.nickname}, function(err, foundUser){
       if(err){
         console.log('noob');
@@ -80,6 +108,7 @@ const auth0Strategy = new Auth0Strategy({
 // });
 passport.use(auth0Strategy);
 passport.use(jwtStrategy);
+passport.use(twitterStrategy);
 
 passport.serializeUser(function(user, done) {
   done(null, user);
@@ -104,10 +133,11 @@ if ('OPTIONS' == req.method) {
   }
 };
 
-app.use(allowCrossDomain);
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(passport.initialize());
+app.use(passport.session());
+app.use(allowCrossDomain);
 
 
 
@@ -134,18 +164,28 @@ app.post("/login", function(req, res) {
   });
 });
 
-//=========AUTH0 LOGIN=======
-// app.get('/auth',
-//   passport.authenticate('auth0'), function (req, res) {
-//   res.send("nerd");
-// });
+// =========AUTH0 LOGIN=======
+app.get('/auth',
+  passport.authenticate('auth0'), function (req, res) {
+    console.log(req.user);
+  res.send(jwt.sign({id: req.user._id}, jwtOptions.secretOrKey));
+});
 
 app.get('/auth/callback',
   passport.authenticate('auth0'), function (req, res) {
+    console.log(req);
   res.json("/successful");
 });
 
+app.get('/auth/twitter',
+  passport.authenticate('twitter'));
 
+app.get('/auth/twitter/callback',
+  passport.authenticate('twitter', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  });
 
 app.get('/images', (req, res) => {
   const images = [];
@@ -168,8 +208,8 @@ app.get("/secret", passport.authenticate('jwt', { session: false }), function(re
 });
 
 
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname , '../index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname , '../index.html'));
+// });
 
 app.listen(8000, () => console.log('Pinterest Starting!'));
