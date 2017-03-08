@@ -11,7 +11,7 @@ const ExtractJwt  = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
 const Auth0Strategy       = require('passport-auth0');
 const TwitterStrategy     = require('passport-twitter');
-const Session            = require('express-session');
+const session             = require('express-session');
 
 const app = express();
 
@@ -41,11 +41,18 @@ if ('OPTIONS' == req.method) {
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(allowCrossDomain);
-app.use(Session({
+app.use(session({
   secret: Keys.sessionSecret,
   resave: false,
   saveUninitialized: false
 }));
+
+passport.serializeUser(function(user, done) {
+  console.log('hello' + user);
+  done(null, user) }
+);
+passport.deserializeUser(function(user, done) { done(null, user) });
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -76,11 +83,10 @@ const twitterStrategy = new TwitterStrategy({
     callbackURL: "http://localhost:8000/auth/twitter/callback"
   },
   function(token, tokenSecret, profile, done) {
-    console.log( profile);
     User.findOne({username: profile.displayName}, function(err, foundUser){
       if(err){
         console.log('noob');
-        return(done, err);
+        return done(err);
       } else if(foundUser === null){
         User.create({
           username: profile.displayName
@@ -88,11 +94,11 @@ const twitterStrategy = new TwitterStrategy({
           if(err){
             console.log(err);
           } else {
-            return done(null, madeUser);
+            return done(err, madeUser);
           }
         });
       } else {
-        return done(null, foundUser);
+        return done(err, foundUser);
       }
     });
   });
@@ -118,33 +124,18 @@ const auth0Strategy = new Auth0Strategy({
           if(err){
             console.log(err);
           } else {
-            return done(null, madeUser);
+            return done(err, madeUser);
           }
         });
       } else {
-        return done(null, foundUser);
+        return done(err, foundUser);
       }
     });
   });
 
-// User.create({
-//   username : 'Dodo',
-//   password: 'hello'
-// }, (err, savedUser) => {
-//   if(err) console.log(err);
-//   console.log(savedUser);
-// });
 passport.use(auth0Strategy);
 passport.use(jwtStrategy);
 passport.use(twitterStrategy);
-
-passport.serializeUser(function(user, done) {
-  done(null, user);
-});
-
-passport.deserializeUser(function(user, done) {
-  done(null, user);
-});
 
 
 
@@ -174,14 +165,12 @@ app.post("/login", function(req, res) {
 // =========AUTH0 LOGIN=======
 app.get('/auth',
   passport.authenticate('auth0'), function (req, res) {
-    console.log(req.user);
-  res.send(jwt.sign({id: req.user._id}, jwtOptions.secretOrKey));
+  // res.send(jwt.sign({id: req.user._id}, jwtOptions.secretOrKey));
 });
 
 app.get('/auth/callback',
   passport.authenticate('auth0'), function (req, res) {
-    console.log(req);
-  res.json("/successful");
+    res.redirect('http://localhost:8080/');
 });
 
 app.get('/auth/twitter',
@@ -191,6 +180,8 @@ app.get('/auth/twitter/callback',
   passport.authenticate('twitter', { failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication, redirect home.
+    console.log('user: ' + req.user);
+
     res.redirect('http://localhost:8080/');
   });
 
@@ -214,9 +205,10 @@ app.get("/secret", passport.authenticate('jwt', { session: false }), function(re
   res.json("Success! You can not see this without a token");
 });
 
+app.get('/testing', ((req, res) => {
+  console.log(req.session.passport);
 
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname , '../index.html'));
-// });
+  res.json(req.session.passport);
+}))
 
 app.listen(8000, () => console.log('Pinterest Starting!'));
