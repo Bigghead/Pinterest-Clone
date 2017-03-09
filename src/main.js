@@ -3,19 +3,22 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-
+//
 import Header from './components/partials/Header.vue';
 
 
-Vue.config.productionTip = false
 
 //alertify dialog position
-alertify.defaults.notifier.position = 'top-right';
+//alertify.defaults.notifier.position = 'top-right';
 
 /* eslint-disable no-new */
+
 new Vue({
-  el: '#app',
+  el: '#root',
+  data: {
+    message: 'Hello Vue'
+  },
   router,
   template: '<App/>',
-  components: { App, Header }
+  components: { App }
 });
