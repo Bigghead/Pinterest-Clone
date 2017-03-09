@@ -39,7 +39,7 @@ if ('OPTIONS' == req.method) {
   }
 };
 
-
+app.use(express.static(__dirname ));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(session({
@@ -175,12 +175,14 @@ app.get('/auth/callback',
   passport.authenticate('auth0'), function (req, res) {
     console.log('authenticating AUTH0');
     reqUser = req.user;
-    req.session.save(function(err){
+    //req.session.save(function(err){
       console.log('REQUESTING 2');
       res.redirect('http://localhost:8080/');
-    });
+    //});
 });
 
+
+//=========TWITTER LOGIN
 app.get('/auth/twitter',
   passport.authenticate('twitter'));
 
@@ -209,6 +211,11 @@ app.get('/images', (req, res) => {
 
 app.get('/testing', ((req, res) => {
   console.log(req.session);
+  res.send(req.user);
+}));
+
+app.get('/verify', ((req, res) => {
+  console.log(req.session);
   res.send(req.session);
 }));
 
@@ -225,5 +232,9 @@ app.get('/logout', function(req, res){
   req.logout();
   res.redirect('http://localhost:8080');
 })
+
+app.get('/', function(req, res) {
+  res.sendfile(path.join(__dirname, '../index.html'));
+});
 
 app.listen(8000, () => console.log('Pinterest Starting!'));
