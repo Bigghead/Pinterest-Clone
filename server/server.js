@@ -1,5 +1,6 @@
 const express    = require('express');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const mongoose   = require('mongoose');
 const path       = require('path');
 const Keys       = require('../apiKeys');
@@ -14,6 +15,7 @@ const TwitterStrategy     = require('passport-twitter');
 const session             = require('express-session');
 
 const app = express();
+var reqUser;
 
 mongoose.Promise = global.Promise;
 
@@ -40,21 +42,22 @@ if ('OPTIONS' == req.method) {
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use(allowCrossDomain);
 app.use(session({
   secret: Keys.sessionSecret,
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
 }));
-
-passport.serializeUser(function(user, done) {
-  console.log('hello' + user);
-  done(null, user) }
-);
-passport.deserializeUser(function(user, done) { done(null, user) });
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(allowCrossDomain);
+
+
+passport.serializeUser(function(user, done) {
+  console.log('serializing ' + user);
+  done(null, user) }
+);
+passport.deserializeUser(function(user, done) { done(null, user) });
 
 //Passport config
 var jwtOptions = {}
@@ -164,23 +167,26 @@ app.post("/login", function(req, res) {
 
 // =========AUTH0 LOGIN=======
 app.get('/auth',
-  passport.authenticate('auth0'), function (req, res) {
-  // res.send(jwt.sign({id: req.user._id}, jwtOptions.secretOrKey));
-});
+  passport.authenticate('auth0'), function(req, res){
+    console.log('Testing Auth, 1');
+  });
 
 app.get('/auth/callback',
   passport.authenticate('auth0'), function (req, res) {
-    res.redirect('http://localhost:8080/');
+    console.log('authenticating AUTH0');
+    reqUser = req.user;
+    req.session.save(function(err){
+      console.log('REQUESTING 2');
+      res.redirect('http://localhost:8080/');
+    });
 });
 
 app.get('/auth/twitter',
   passport.authenticate('twitter'));
 
 app.get('/auth/twitter/callback',
-  passport.authenticate('twitter', { failureRedirect: '/login' }),
+  passport.authenticate('twitter', { failureRedirect: 'http://localhost:8080/login' }),
   function(req, res) {
-    // Successful authentication, redirect home.
-    console.log('user: ' + req.user);
 
     res.redirect('http://localhost:8080/');
   });
@@ -200,15 +206,24 @@ app.get('/images', (req, res) => {
   });
 });
 
-app.get("/secret", passport.authenticate('jwt', { session: false }), function(req, res){
-  console.log(req.user);
-  res.json("Success! You can not see this without a token");
-});
 
 app.get('/testing', ((req, res) => {
-  console.log(req.session.passport);
+  console.log(req.session);
+  res.send(req.session);
+}));
 
-  res.json(req.session.passport);
-}))
+app.get('/verifyUser', ((req, res) => {
+  if(reqUser){
+    User.findById(reqUser._id, function(err, foundUser){
+      res.send(foundUser);
+    });
+  }
+}));
+
+app.get('/logout', function(req, res){
+  reqUser = undefined;
+  req.logout();
+  res.redirect('http://localhost:8080');
+})
 
 app.listen(8000, () => console.log('Pinterest Starting!'));

@@ -13,6 +13,8 @@
         <template v-else>
           <li><router-link :to="'/login'">Log In</router-link></li>
           <li><router-link :to="'/images'">All Images</router-link></li>
+          <li><a href='http://localhost:8000/logout'>Log Out</a></li>
+
         </template>
         </ul>
       </div>
