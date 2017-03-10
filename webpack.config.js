@@ -16,7 +16,8 @@ module.exports = {
      filename: 'build.js'
    },
    plugins: [new HtmlWebpackPlugin({
-     filename: 'index.html'
+     filename: 'index.html',
+     template: './index.html'
    })],
   resolve: {
     extensions: ['.js', '.vue', '.json'],

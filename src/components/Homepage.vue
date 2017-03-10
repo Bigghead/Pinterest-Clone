@@ -20,7 +20,7 @@ export default {
   },
   methods:{
     verifyUser(){
-      axios.get('http://localhost:8000/verify').then((res) => {
+      axios.get('http://localhost:8000/testing').then((res) => {
         console.log(res);
       });
     }

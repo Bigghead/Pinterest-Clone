@@ -13,6 +13,8 @@ const JwtStrategy = passportJWT.Strategy;
 const Auth0Strategy       = require('passport-auth0');
 const TwitterStrategy     = require('passport-twitter');
 const session             = require('express-session');
+const serveStatic = require('serve-static');
+
 
 const app = express();
 var reqUser;
@@ -39,7 +41,7 @@ if ('OPTIONS' == req.method) {
   }
 };
 
-app.use(express.static(__dirname +  '../'));
+app.use(serveStatic(path.join(__dirname, '../dist')));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(session({
