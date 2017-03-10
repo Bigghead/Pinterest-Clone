@@ -3,7 +3,6 @@
     <h1>Welcome to My Pinterest Clone</h1>
     <button @click='verifyUser'>Verify</button>
     <hr>
-    <hr>
     <div class="" v-if='user'>
       <h3>{{user.username}}</h3>
     </div>
