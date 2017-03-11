@@ -11,7 +11,8 @@
         </template>
 
         <template v-else>
-          <li><a href='http://localhost:8000/auth'>Log In</a></li>
+          <!-- <li><a href='http://localhost:8000/auth'>Log In</a></li> -->
+          <li><router-link :to="'/login'">Log In </router-link> </li>
           <li><router-link :to="'/images'">All Images</router-link></li>
           <li><a href='http://localhost:8000/logout'>Log Out</a></li>
 

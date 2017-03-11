@@ -11,7 +11,7 @@ module.exports = {
   },
   output: {
      // To the `dist` folder
-     path: './dist',
+     path: __dirname + './dist',
      // With the filename `build.js` so it's dist/build.js
      filename: 'build.js'
    },

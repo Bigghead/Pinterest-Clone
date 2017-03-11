@@ -152,7 +152,8 @@ app.post("/login", function(req, res) {
   }
   // usually this would be a database call:
   User.findOne({username : name}, (err, user) => {
-    if( ! user ){
+    console.log(user);
+    if( !user ){
       res.status(401).json({message:"no such user found"});
     }
       else {
@@ -180,7 +181,7 @@ app.get('/auth/callback',
     reqUser = req.user;
     //req.session.save(function(err){
       console.log('REQUESTING 2');
-      res.redirect('/');
+      res.redirect('http://localhost:8080/');
     //});
 });
 
@@ -219,8 +220,8 @@ app.get('/testing', ((req, res) => {
 
 
 
-app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, '../index.html'));
-});
+// app.get('/', function(req, res) {
+//   res.sendFile(path.join(__dirname, '../index.html'));
+// });
 
 app.listen(8000, () => console.log('Pinterest Starting!'));
