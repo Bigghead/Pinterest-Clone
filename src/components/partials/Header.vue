@@ -2,21 +2,13 @@
   <div class="">
     <nav class='deep-purple accent-2'>
       <div class="nav-wrapper">
-        <a href="#" class="brand-logo left">Pinterest Clone</a>
+        <a href="#" class="brand-logo left">Pinterest Stuff</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <template v-if="token">
-            <li><router-link :to="'/login'">User</router-link></li>
-            <li><router-link :to="'/images'">All Images</router-link></li>
-            <li><router-link :to="'/logout'">Log Out</router-link></li>
-        </template>
 
-        <template v-else>
-          <!-- <li><a href='http://localhost:8000/auth'>Log In</a></li> -->
-          <li><router-link :to="'/login'">Log In </router-link> </li>
+          <li><a href='http://localhost:8000/auth'>Log In!</a></li>
           <li><router-link :to="'/images'">All Images</router-link></li>
           <li><a href='http://localhost:8000/logout'>Log Out</a></li>
 
-        </template>
         </ul>
       </div>
     </nav>

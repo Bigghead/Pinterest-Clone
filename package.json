@@ -23,8 +23,10 @@
     "passport-auth0": "^0.6.0",
     "passport-jwt": "^2.2.1",
     "passport-twitter": "^1.0.4",
+    "serve-static": "^1.12.1",
     "vue": "^2.2.1",
-    "vue-router": "^2.2.0"
+    "vue-router": "^2.2.0",
+    "vuex": "^2.2.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",
@@ -91,5 +93,6 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "proxy": "http://localhost:8000"
 }

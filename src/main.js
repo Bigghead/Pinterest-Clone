@@ -3,10 +3,12 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-//
+
+//=========COMPONENTS==
 import Header from './components/partials/Header.vue';
 
-
+//=========VUEX========
+import store from './store.js';
 
 //alertify dialog position
 //alertify.defaults.notifier.position = 'top-right';
@@ -19,6 +21,7 @@ new Vue({
     message: 'Hello Vue'
   },
   router,
+  store: store,
   template: '<App/>',
   components: { App }
 });
