@@ -5,9 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    user: { _id: '58bbad1094e5750c8903332a',
-            username: 'Ron Swanson',
-            __v: 0 },
+    user: {},
     count: 25
   },
   mutations:{
