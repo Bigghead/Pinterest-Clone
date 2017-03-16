@@ -2,19 +2,22 @@
   <div class=" images">
     <h2>Images</h2>
 
+<div v-if='user'>
   <input type="text" name="" value="" v-model='imageLink'>
   <div class="">
     <button type="button" name="button" class='waves-effect waves-light btn' v-on:click.prevent='addNewImage'>Pin A New Image</button>
   </div>
+</div>
     <div class="row">
      <div class="col s3" v-for="image in images">
        <div class="card">
          <div class="card-image">
            <img v-bind:src="image.link">
-           <span class="card-title">Card Title</span>
          </div>
          <div class="card-action">
-           <a href="#">This is a link</a>
+           <a href="#">Likes: {{ image.likedBy.length}}</a>
+           <a href="#" v-if='user && image.addedBy === user.username'>Delete</a>
+          <router-link :to="'/user/images'" v-else>Pinned By: {{ image.addedBy }}</router-link>
          </div>
        </div>
      </div>
@@ -37,6 +40,9 @@
     computed:{
       images(){
         return this.$store.state.images;
+      },
+      user(){
+        return this.$store.state.user
       }
     },
     methods:{
@@ -66,5 +72,13 @@
   input{
     width: 50%;
     text-align: center;
+  }
+
+  .row{
+    margin-top: 5%;
+  }
+
+  img{
+    height: 225px;
   }
   </style>

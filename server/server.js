@@ -218,7 +218,7 @@ app.post('/images/new', ((req, res) => {
   console.log(req.body.link);
   Images.create({
     link: req.body.link,
-    addedBy: req.user._id
+    addedBy: req.user.username
   }, function(err, newImage){
     if(err) console.log(err);
     res.send(newImage);
