@@ -4,7 +4,7 @@
     <button @click='verifyUser'>Verify</button>
     <hr>
     <div class="" v-if='user'>
-      <h3>{{user.username}}</h3>
+      <h3>Welcome, {{user.username}}</h3>
     </div>
   </div>
 </template>
@@ -14,9 +14,9 @@ import mutations from '../store.js';
 import axios from 'axios';
 export default {
   mounted(){
-    axios.get('http://localhost:8000/testing').then((res) => {
-      this.$store.commit('setUserState', res.data);
-    });
+
+    //call an action from VUEX store
+    this.$store.dispatch('setUserState');
   },
   computed:{
     user: function(){
@@ -34,6 +34,7 @@ export default {
 
 <style lang="css" scoped>
   #homepage{
+    margin: 10% auto;
     text-align: center;
   }
 </style>

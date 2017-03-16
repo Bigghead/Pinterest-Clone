@@ -1,48 +1,70 @@
 <template lang="html">
   <div class=" images">
     <h2>Images</h2>
-    <button type="button" name="button" v-on:click='getSecretThing'>Get Secret</button>
-    <div class="row" >
-      <img  alt="" v-for='image in images' v-bind:src='image'>
-    </div>
+
+  <input type="text" name="" value="" v-model='imageLink'>
+  <div class="">
+    <button type="button" name="button" class='waves-effect waves-light btn' v-on:click.prevent='addNewImage'>Pin A New Image</button>
   </div>
-</template>
+    <div class="row">
+     <div class="col s3" v-for="image in images">
+       <div class="card">
+         <div class="card-image">
+           <img v-bind:src="image.link">
+           <span class="card-title">Card Title</span>
+         </div>
+         <div class="card-action">
+           <a href="#">This is a link</a>
+         </div>
+       </div>
+     </div>
+   </div>
 
-<script>
-import axios from 'axios';
-export default {
-  data(){
-    return {
-      images: []
-    };
-  },
-  methods:{
-    getSecretThing() {
-   var jwtHeader = { 'Authorization': 'JWT ' + localStorage.getItem('id_token') };
-   axios.get('http://localhost:8000/secret', {
-     headers: {
-       'Authorization': 'JWT ' + localStorage.getItem('id_token')
-     }
-   })
-        .then((data) => {
-     console.log('Success');
-    });
-   }
-  },
-  created(){
-    axios.get('http://localhost:8000/images')
-         .then((res) => {
-           this.images = res.data;
-         })
-         .catch((err) => {
-           console.log(err);
-         });
-  }
-};
-</script>
+    </div>
+  </template>
 
-<style lang="css" scoped>
+  <script>
+  import axios from 'axios';
+  export default {
+    data(){
+      return {
+        imageLink: ''
+      };
+    },
+    mounted(){
+      this.$store.dispatch('setImages');
+    },
+    computed:{
+      images(){
+        return this.$store.state.images;
+      }
+    },
+    methods:{
+      addNewImage(){
+        let vm = this;
+        this.$store.dispatch('addNewImage', vm.imageLink);
+      }
+    },
+    created(){
+      axios.get('http://localhost:8000/images')
+      .then((res) => {
+        this.images = res.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
+  };
+  </script>
+
+  <style lang="css" scoped>
   .images{
     text-align: center;
+    color: white;
   }
-</style>
+
+  input{
+    width: 50%;
+    text-align: center;
+  }
+  </style>

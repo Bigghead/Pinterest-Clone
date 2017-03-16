@@ -25,7 +25,8 @@ mongoose.Promise = global.Promise;
 mongoose.connect(`mongodb://${Keys.mlabUser}:${Keys.mlabPass}@ds113670.mlab.com:13670/pinterest`);
 
 //Model Requires
-const User = require('./models/user.js');
+const User = require('./models/User.js');
+const Images = require('./models/Images.js');
 
 var allowCrossDomain = function(req, res, next) {
 res.header('Access-Control-Allow-Origin', '*');
@@ -57,7 +58,6 @@ app.use(allowCrossDomain);
 
 
 passport.serializeUser(function(user, done) {
-  console.log('serializing ' + user);
   done(null, user) }
 );
 passport.deserializeUser(function(user, done) { done(null, user) });
@@ -176,10 +176,8 @@ app.get('/auth',
 
 app.get('/auth/callback',
   passport.authenticate('auth0'), function (req, res) {
-    console.log('authenticating AUTH0');
     reqUser = req.user;
     //req.session.save(function(err){
-      console.log('REQUESTING 2');
       res.redirect('/');
     //});
 });
@@ -197,19 +195,35 @@ app.get('/auth/twitter/callback',
   });
 
 app.get('/images', (req, res) => {
-  const images = [];
-  return new Promise((resolve, reject) => {
-    axios.get('https://www.instagram.com/daquan/media/').then((res) => {
-
-      for (let post of res.data.items) {
-                images.push(post.images.standard_resolution.url);
-              }
-        resolve(images);
-      });
-  }).then((images) => {
-    res.send(images);
+  // const images = [];
+  // return new Promise((resolve, reject) => {
+  //   axios.get('https://www.instagram.com/daquan/media/').then((res) => {
+  //
+  //     for (let post of res.data.items) {
+  //               images.push(post.images.standard_resolution.url);
+  //             }
+  //       resolve(images);
+  //     });
+  // }).then((images) => {
+  //   res.send(images);
+  // });
+  Images.find({}, function(err, allImages){
+    if(err) console.log(err);
+    res.send(allImages);
   });
 });
+
+app.post('/images/new', ((req, res) => {
+
+  console.log(req.body.link);
+  Images.create({
+    link: req.body.link,
+    addedBy: req.user._id
+  }, function(err, newImage){
+    if(err) console.log(err);
+    res.send(newImage);
+  });
+}))
 
 
 app.get('/testing', ((req, res) => {

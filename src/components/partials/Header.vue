@@ -25,15 +25,10 @@
 
 <script>
 export default {
-  data(){
-    return {
-      token: false
-    };
-  },
-  created(){
-    if(localStorage.id_token){
-      this.token = true;
-    }
+  mounted(){
+
+    //call an action from VUEX store
+    this.$store.dispatch('setUserState');
   },
   computed: {
     user(){
