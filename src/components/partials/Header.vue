@@ -6,7 +6,7 @@
         <ul id="nav-mobile" class="right hide-on-med-and-down">
 
         <template v-if='user'>
-          <li><a href='http://localhost:8000/auth'>{{user.username}}</a></li>
+          <li><a href='#a'>{{user.username}}</a></li>
           <li><router-link :to="'/images'">All Images</router-link></li>
           <li><a href='http://localhost:8000/logout'>Log Out</a></li>
         </template>
@@ -14,7 +14,7 @@
         <template v-else>
           <li><a href='http://localhost:8000/auth'>Log In!</a></li>
           <li><router-link :to="'/images'">All Images</router-link></li>
-          <li><a href='http://localhost:8000/logout'>Log Out</a></li>
+          <!-- <li><a href='http://localhost:8000/logout'>Log Out</a></li> -->
         </template>
 
         </ul>
@@ -25,11 +25,7 @@
 
 <script>
 export default {
-  mounted(){
 
-    //call an action from VUEX store
-    this.$store.dispatch('setUserState');
-  },
   computed: {
     user(){
       return this.$store.state.user;

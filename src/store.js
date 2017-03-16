@@ -23,7 +23,7 @@ export default new Vuex.Store({
   },
   actions:{
     setUserState(context, userData){
-      axios.get('http://localhost:8000/testing').then((res) => {
+      axios.get('http://localhost:8000/verifyUser').then((res) => {
         context.commit('setUserState', res.data);
       });
     },

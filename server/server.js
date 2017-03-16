@@ -28,6 +28,9 @@ mongoose.connect(`mongodb://${Keys.mlabUser}:${Keys.mlabPass}@ds113670.mlab.com:
 const User = require('./models/User.js');
 const Images = require('./models/Images.js');
 
+
+//ROUTE Requires
+const userRoutes = require('./routes/userRoutes');
 var allowCrossDomain = function(req, res, next) {
 res.header('Access-Control-Allow-Origin', '*');
 res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -144,6 +147,8 @@ passport.use(jwtStrategy);
 passport.use(twitterStrategy);
 
 
+//USE ROUTES
+app.use(userRoutes);
 
 app.post("/login", function(req, res) {
   if(req.body.username && req.body.password){
@@ -195,18 +200,7 @@ app.get('/auth/twitter/callback',
   });
 
 app.get('/images', (req, res) => {
-  // const images = [];
-  // return new Promise((resolve, reject) => {
-  //   axios.get('https://www.instagram.com/daquan/media/').then((res) => {
-  //
-  //     for (let post of res.data.items) {
-  //               images.push(post.images.standard_resolution.url);
-  //             }
-  //       resolve(images);
-  //     });
-  // }).then((images) => {
-  //   res.send(images);
-  // });
+
   Images.find({}, function(err, allImages){
     if(err) console.log(err);
     res.send(allImages);
@@ -225,11 +219,6 @@ app.post('/images/new', ((req, res) => {
   });
 }))
 
-
-app.get('/testing', ((req, res) => {
-  console.log(req.session);
-  res.send(req.user);
-}));
 
 app.get('/logout', ((req, res) =>{
   req.logout();
