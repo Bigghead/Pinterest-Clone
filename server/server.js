@@ -201,10 +201,10 @@ app.get('/auth/twitter/callback',
 
 app.get('/images', (req, res) => {
 
-  Images.find({}, function(err, allImages){
+  Images.find({}).sort('-created').exec(function(err, allImages) { 
     if(err) console.log(err);
     res.send(allImages);
-  });
+   });
 });
 
 app.post('/images/new', ((req, res) => {
@@ -217,8 +217,17 @@ app.post('/images/new', ((req, res) => {
     if(err) console.log(err);
     res.send(newImage);
   });
-}))
+}));
 
+app.post('/images/delete', ((req, res) =>{
+  console.log(req.body.imageId);
+  Images.findByIdAndRemove(req.body.imageId, 
+    function(err, image){
+      if(err) console.log(err);
+        res.status(201).send('success');
+
+    });
+}));
 
 app.get('/logout', ((req, res) =>{
   req.logout();

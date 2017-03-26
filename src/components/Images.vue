@@ -15,8 +15,9 @@
            <img v-bind:src="image.link">
          </div>
          <div class="card-action">
-           <a href="#">Likes: {{ image.likedBy.length}}</a>
-           <a href="#" v-if='user && image.addedBy === user.username'>Delete</a>
+           <a href="#" v-if='user'>Likes: {{ image.likedBy.length}}</a>
+           <a v-else class='disabled'>Likes : {{ image.likedBy.length }}</a>
+           <a href="#" v-if='user && image.addedBy === user.username' v-on:click.prevent='deleteImage(image._id)'>Delete</a>
           <router-link :to="'/user/images'" v-else>Pinned By: {{ image.addedBy }}</router-link>
          </div>
        </div>
@@ -34,31 +35,37 @@
         imageLink: ''
       };
     },
-    mounted(){
-      this.$store.dispatch('setImages');
-    },
+   
     computed:{
       images(){
         return this.$store.state.images;
       },
       user(){
-        return this.$store.state.user
+        return this.$store.state.user;
       }
     },
     methods:{
       addNewImage(){
         let vm = this;
         this.$store.dispatch('addNewImage', vm.imageLink);
+      },
+
+      deleteImage(id){
+        let vm = this;
+        this.$store.dispatch('deleteImage', id);
       }
     },
     created(){
-      axios.get('http://localhost:8000/images')
-      .then((res) => {
-        this.images = res.data;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      if(this.$store.state.images.length === 0){
+        this.$store.dispatch('setImages');
+      };
+      // axios.get('http://localhost:8000/images')
+      // .then((res) => {
+      //   this.images = res.data;
+      // })
+      // .catch((err) => {
+      //   console.log(err);
+      // });
     }
   };
   </script>
@@ -81,4 +88,9 @@
   img{
     height: 225px;
   }
+
+  .disabled {
+        pointer-events: none;
+        cursor: default;
+    }
   </style>

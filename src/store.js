@@ -19,6 +19,15 @@ export default new Vuex.Store({
     },
     addNewImage: function(state, newImage){
       state.images.unshift(newImage);
+    },
+    deleteImage: function(state, imageId){
+      state.images.forEach(image =>{
+        if(image._id === imageId){
+          state.images.splice(image , 1);
+        }
+      });
+      //state.images.splice(state.images.indexOf(imageId), 1);
+      //state.images.splice(state.images.indexOf(imageId), 1, images)
     }
   },
   actions:{
@@ -38,6 +47,16 @@ export default new Vuex.Store({
       }).then((res) =>{
         console.log(res.data);
         context.commit('addNewImage', res.data);
+      });
+    },
+    deleteImage(context, imageId){
+      axios.post('http://localhost:8000/images/delete', {
+        imageId
+      }).then( res => {
+        console.log(res.data);
+        context.commit('deleteImage', imageId);
+      }).catch(err =>{
+        console.log(err);
       });
     }
   }
