@@ -8,7 +8,7 @@
         <template v-if='user'>
           <li><a href='#a'>{{user.username}}</a></li>
           <li><router-link :to="'/images'">All Images</router-link></li>
-          <li><a href='http://localhost:8000/logout'>Log Out</a></li>
+          <li><a href='http://localhost:8000/logout' v-on:click='logOut'>Log Out</a></li>
         </template>
 
         <template v-else>
@@ -33,6 +33,11 @@ export default {
   },
   created(){
     this.$store.dispatch('setUserState');
+  },
+  methods: {
+    logOut(){
+      this.$store.dispatch('logOut');
+    }
   }
 };
 </script>

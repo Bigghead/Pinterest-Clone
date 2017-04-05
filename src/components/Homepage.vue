@@ -14,8 +14,8 @@ import axios from 'axios';
 export default {
   mounted(){
 
-    //call an action from VUEX store
-    this.$store.dispatch('setUserState');
+    // //call an action from VUEX store
+    // this.$store.dispatch('setUserState');
   },
   computed:{
     user: function(){

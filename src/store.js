@@ -36,8 +36,9 @@ export default new Vuex.Store({
   actions: {
     setUserState(context, userData) {
 
-      if (window.localStorage.getItem("myData") === null) {
+      if (window.localStorage.getItem("myData") === null || window.localStorage.getItem("myData") === '""') {
         axios.get('http://localhost:8000/verifyUser').then((res) => {
+          console.log(res.data);
           window.localStorage.setItem('myData', JSON.stringify(res.data))
           context.commit('setUserState', res.data);
         });
@@ -68,6 +69,9 @@ export default new Vuex.Store({
       }).catch(err => {
         console.log(err);
       });
+    },
+    logOut(context){
+      localStorage.removeItem('myData');
     }
   }
 });
