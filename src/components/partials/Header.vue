@@ -30,6 +30,9 @@ export default {
     user(){
       return this.$store.state.user;
     }
+  },
+  created(){
+    this.$store.dispatch('setUserState');
   }
 };
 </script>

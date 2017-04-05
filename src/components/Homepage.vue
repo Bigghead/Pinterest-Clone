@@ -1,7 +1,6 @@
 <template lang="html">
   <div id='homepage'>
-    <h1>Welcome to My Pinterest Clone!!!!!!!!!</h1>
-    <button @click='verifyUser'>Verify</button>
+    <h1>Welcome to My Pinterest Clone</h1>
     <hr>
     <div class="" v-if='user'>
       <h3>Welcome, {{user.username}}</h3>
@@ -32,7 +31,11 @@ export default {
 };
 </script>
 
-<style lang="css" scoped>
+<style lang="css" >
+
+  body{
+    font-family: Amaranth;
+  }
   #homepage{
     margin: 10% auto;
     text-align: center;

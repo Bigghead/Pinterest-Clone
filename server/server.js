@@ -94,7 +94,6 @@ const twitterStrategy = new TwitterStrategy({
   function(token, tokenSecret, profile, done) {
     User.findOne({username: profile.displayName}, function(err, foundUser){
       if(err){
-        console.log('noob');
         return done(err);
       } else if(foundUser === null){
         User.create({
@@ -125,7 +124,6 @@ const auth0Strategy = new Auth0Strategy({
     // console.log(profile);
     User.findOne({username: profile.nickname}, function(err, foundUser){
       if(err){
-        console.log('noob');
       } else if(foundUser === null){
         User.create({
           username: profile.nickname
@@ -209,14 +207,24 @@ app.get('/images', (req, res) => {
 
 app.post('/images/new', ((req, res) => {
 
-  console.log(req.body.link);
-  Images.create({
-    link: req.body.link,
-    addedBy: req.user.username
-  }, function(err, newImage){
-    if(err) console.log(err);
-    res.send(newImage);
-  });
+  User.findById(req.user._id)
+    .then((foundUser)  => {
+      console.log(req.body.link);
+      console.log()
+      Images.create({
+        link: req.body.link,
+        addedBy: req.user.username
+      })
+      .then((newImage) => {
+        foundUser.images.push(newImage);
+        foundUser.save();
+          res.send(newImage);
+      });
+    })
+    .catch( err => {
+      console.log(err);
+    });
+ 
 }));
 
 app.post('/images/delete', ((req, res) =>{
