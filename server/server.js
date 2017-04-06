@@ -213,7 +213,8 @@ app.post('/images/new', ((req, res) => {
       console.log()
       Images.create({
         link: req.body.link,
-        addedBy: req.user.username
+        addedBy: req.user.username,
+        addedById: req.user._id
       })
       .then((newImage) => {
         foundUser.images.push(newImage);

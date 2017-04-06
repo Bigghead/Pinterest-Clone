@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const imageSchema = new mongoose.Schema({
   link: String,
   addedBy: String,
+  addedById: String,
   likedBy: Array,
   created: { type: Date, default: Date.now }
 });

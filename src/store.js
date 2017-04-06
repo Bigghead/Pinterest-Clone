@@ -14,7 +14,7 @@ export default new Vuex.Store({
       //state.count = userData;
       state.user = userData;
     },
-    fetchUserData: function(state, userData){
+    fetchUserData: function (state, userData) {
       state.user = userData;
     },
     setImages: function (state, imageData) {
@@ -24,9 +24,14 @@ export default new Vuex.Store({
       state.images.unshift(newImage);
     },
     deleteImage: function (state, imageId) {
-      state.images.forEach(image => {
+      state.images.forEach((image, index) => {
+        console.log(image._id === imageId);
         if (image._id === imageId) {
-          state.images.splice(image, 1);
+          console.log(image);
+          console.log(index);
+          console.log(imageId);
+          state.images.splice(index, 1);
+          //return;
         }
       });
       //state.images.splice(state.images.indexOf(imageId), 1);
@@ -61,17 +66,20 @@ export default new Vuex.Store({
       });
     },
     deleteImage(context, imageId) {
-      axios.post('http://localhost:8000/images/delete', {
-        imageId
-      }).then(res => {
-        console.log(res.data);
-        context.commit('deleteImage', imageId);
-      }).catch(err => {
-        console.log(err);
-      });
+      // axios.post('http://localhost:8000/images/delete', {
+      //   imageId
+      // }).then(res => {
+      //console.log(res.data);
+      context.commit('deleteImage', imageId);
+      //}).catch(err => {
+      //console.log(err);
+      //});
     },
-    logOut(context){
-      localStorage.removeItem('myData');
+    logOut(context) {
+      axios.get('http://localhost:8000/logout')
+        .then(() => {
+          localStorage.removeItem('myData');
+        });
     }
   }
 });

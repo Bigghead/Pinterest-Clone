@@ -17,8 +17,8 @@
          <div class="card-action">
            <a href="#" v-if='user'>Likes: {{ image.likedBy.length}}</a>
            <a v-else class='disabled'>Likes : {{ image.likedBy.length }}</a>
-           <a href="#" v-if='user && image.addedBy === user.username' v-on:click.prevent='deleteImage(image._id)'>Delete</a>
-          <router-link :to="'/user/images'" v-else>Pinned By: {{ image.addedBy }}</router-link>
+           <a href="#" v-if='user && image.addedById === user._id' v-on:click.prevent='deleteImage(image._id)'>Delete</a>
+          <router-link :to="'/user/' + image.addedById +'/images'" v-else>Pinned By: {{ image.addedBy }}</router-link>
          </div>
        </div>
      </div>
