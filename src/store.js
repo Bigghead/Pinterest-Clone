@@ -6,7 +6,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    user: {},
+    user: null,
     images: []
   },
   mutations: {
@@ -41,15 +41,17 @@ export default new Vuex.Store({
   actions: {
     setUserState(context, userData) {
 
-      if (window.localStorage.getItem("myData") === null || window.localStorage.getItem("myData") === '""') {
+      //if (window.localStorage.getItem("myData") === null || window.localStorage.getItem("myData") === '""') {
+        if(context.state.user === null){
         axios.get('http://localhost:8000/verifyUser').then((res) => {
-          console.log(res.data);
-          window.localStorage.setItem('myData', JSON.stringify(res.data))
+          // console.log(res.data);
+          // window.localStorage.setItem('myData', JSON.stringify(res.data))
           context.commit('setUserState', res.data);
         });
-      } else {
-        context.commit('fetchUserData', JSON.parse(window.localStorage.getItem("myData")))
-      }
+        }
+      // } else {
+      //   context.commit('fetchUserData', JSON.parse(window.localStorage.getItem("myData")))
+      // }
 
     },
     setImages: function (context, imageData) {
