@@ -5,6 +5,7 @@ import Login from '../components/Login.vue'
 import LocalLogin from '../components/LocalLogin.vue'
 import Images from '../components/Images.vue'
 import Register from '../components/Register.vue'
+import UserImages from '../components/UserImages.vue';
 
 Vue.use(Router)
 
@@ -26,6 +27,10 @@ export default new Router({
     {
       path: '/register',
       component: Register
+    },
+    {
+      path: '/images/:userID',
+      component: UserImages
     }
   ]
 })

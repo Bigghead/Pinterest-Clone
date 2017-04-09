@@ -3,6 +3,7 @@ const Router  = express.Router();
 const User    = require('../models/User.js');
 
 Router.get('/verifyUser', ((req, res) => {
+  console.log('Hitting verify route: ' + req.user);
   res.send(req.user);
 }));
 

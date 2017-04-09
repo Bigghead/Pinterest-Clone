@@ -124,6 +124,7 @@ const auth0Strategy = new Auth0Strategy({
     // console.log(profile);
     User.findOne({username: profile.nickname}, function(err, foundUser){
       if(err){
+        return done(err);
       } else if(foundUser === null){
         User.create({
           username: profile.nickname
@@ -224,6 +225,7 @@ app.post('/images/new', ((req, res) => {
     })
     .catch( err => {
       console.log(err);
+      res.status(500);
     });
  
 }));
@@ -236,6 +238,13 @@ app.post('/images/delete', ((req, res) =>{
         res.status(201).send('success');
 
     });
+}));
+
+app.get('/images/:userId', ((req, res) => {
+  User.findById(req.params.userId).exec((err, foundUser) => {
+    if(err) res.status(400).send('No User Found');
+    res.send(foundUser.images);
+  });
 }));
 
 app.get('/logout', ((req, res) =>{
