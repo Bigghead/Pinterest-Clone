@@ -12,7 +12,7 @@
 
     </div>
     <div class="row">
-      <div class="col s3" v-for="image in images">
+      <div class="col m3 s12" v-for="image in images">
         <div class="card">
           <div class="card-image">
             <img v-bind:src="image.link">

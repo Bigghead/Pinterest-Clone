@@ -35,16 +35,16 @@ export default new Vuex.Store({
   actions: {
     setUserState(context, userData) {
 
-      if (window.localStorage.getItem("myData") === null || window.localStorage.getItem("myData") === '""') {
+      //if (window.localStorage.getItem("myData") === null || window.localStorage.getItem("myData") === '""') {
       //if (context.state.user === null || context.state.user === '') {
         axios.get('http://localhost:8000/verifyUser').then((res) => {
-          window.localStorage.setItem('myData', JSON.stringify(res.data))
+          //window.localStorage.setItem('myData', JSON.stringify(res.data))
           context.commit('setUserState', res.data);
         });
       //}
-      } else {
-        context.commit('fetchUserData', JSON.parse(window.localStorage.getItem("myData")))
-      }
+      // } else {
+      //   context.commit('fetchUserData', JSON.parse(window.localStorage.getItem("myData")))
+      // }
 
     },
     setImages(context, imageData) {
