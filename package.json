@@ -25,7 +25,9 @@
     "passport-twitter": "^1.0.4",
     "serve-static": "^1.12.1",
     "vue": "^2.2.1",
+    "vue-masonry": "^0.10.1",
     "vue-router": "^2.2.0",
+    "vue-waterfall": "^1.0.5",
     "vuex": "^2.2.1"
   },
   "devDependencies": {

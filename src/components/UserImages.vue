@@ -1,42 +1,75 @@
 <template>
-    <div class="grid center-align">
-
-        <div class='each-image' v-for='image in userImages'>
-            <img v-bind:src='image' alt="" :class="randomGrid()">
-        </div>
-
-    </div>
+  <waterfall :line-gap="200" :watch="userImages" >
+  <!-- each component is wrapped by a waterfall slot -->
+  <div class='waterfall center-align' >
+       <waterfall-slot
+    v-for="(image, index) in userImages"
+    :width="450"
+    :height="randomHeight()"
+    :order="index"
+    :key="image._id"
+  >
+<!--    
+      your component
+      
+    -->
+<img :src='image.link' alt="">
+    
+  </waterfall-slot>
+  </div>
+</waterfall>
 
 
 </template>
 
 <script>
     import axios from 'axios';
+    import Waterfall from 'vue-waterfall/lib/waterfall'
+    import WaterfallSlot from 'vue-waterfall/lib/waterfall-slot'
     export default {
         data() {
             return {
-                userImages: []
+                userImages: [],
+                width: '400px',
+                height: '250px'
             }
+        },
+        components: {
+            'waterfall': Waterfall,
+            'waterfall-slot': WaterfallSlot
         },
         created() {
             console.log(this.$route.params.userID);
             const vm = this;
-            axios.get('https://www.instagram.com/itswhitenoise/media/').then((res) => {
-                     const images = [];
-                
-                          for (let post of res.data.items) {
-                                       images.push(post.images.standard_resolution.url);
-                                      }
-                       vm.userImages = images;
-                      });
-            
+
+            axios.get('http://localhost:8000/images/' + this.$route.params.userID)
+                .then(res => {
+                    vm.userImages = res.data;
+                })
+            // axios.get('https://www.instagram.com/itswhitenoise/media/').then((res) => {
+            //          const images = [];
+
+            //               for (let post of res.data.items) {
+            //                            images.push(post.images.standard_resolution.url);
+            //                           }
+            //            vm.userImages = images;
+            //    images.forEach(link => {
+            //        axios.post('http://localhost:8000/images/new' ,{
+            //            link: link
+            //        })
+            //    });
+            //});
+
         },
         methods: {
             randomGrid() {
-                const gridLayout = ['grid-item', 'grid-item grid-item--width2', 'grid-item grid-item--width3', 'grid-item grid-item--width4',];
+                const gridLayout = ['grid-item', 'grid-item grid-item--height2', 'grid-item grid-item--height3', 'grid-item grid-item--height4',];
 
                 return gridLayout[Math.floor(Math.random() * gridLayout.length)];
 
+            },
+            randomHeight(){
+                return Math.floor(Math.random() * (600 - 275) + 275);
             }
         }
     }
@@ -44,53 +77,15 @@
 </script>
 
 <style scoped>
-    .col {
-        padding: 0 !important;
-        margin: 0 !important;
-    }
-
-    .grid{
-        margin: 0, 2%, 0, 2% !important;
-    }
-    
-    .each-image {
-        display: inline;
-    }
-    
-    .grid-item {
-        width: 20%;
-        height: 200px;
-        background: #D26;
-        border: 2px solid #333;
-        border-color: hsla(0, 0%, 0%, 0.5);
-        border-radius: 5px;
-    }
-    
-    .grid-item--width2 {
-        width: 25%;
-    }
-    
-    .grid-item--width3 {
-        width: 30%;
-    }
-    
-    .grid-item--width4 {
-        width: 35%;
-    }
-    
-    .grid-item--height2 {
-        height: 200px;
-    }
-    
-    .grid-item--height3 {
-        height: 260px;
-    }
-    
-    .grid-item--height4 {
-        height: 360px;
+    .waterfall{
+        border: 10px solid black;
     }
     
     img {
+        height: 100%;
+        width: 100%;
         object-fit: cover;
+        border: 2px solid grey;
+        margin: 2px;
     }
 </style>

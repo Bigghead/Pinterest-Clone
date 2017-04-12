@@ -6,7 +6,7 @@
         <ul id="nav-mobile" class="right ">
 
         <template v-if='user'>
-          <li><router-link :to="`/images/${user.user._id}`">{{user.username}}</router-link></li>
+          <li><router-link :to="`/images/${user._id}`">{{user.username}}</router-link></li>
           <li><router-link :to="'/images'">All Images</router-link></li>
           <li><a href='http://localhost:8000/logout' v-on:click='logOut'>Log Out</a></li>
         </template>

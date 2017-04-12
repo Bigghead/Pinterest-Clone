@@ -10,6 +10,10 @@ import Header from './components/partials/Header.vue';
 //=========VUEX========
 import store from './store.js';
 
+//=========VUE MASONRY===
+import VueMasonryPlugin from 'vue-masonry';
+Vue.use(VueMasonryPlugin);
+
 //alertify dialog position
 //alertify.defaults.notifier.position = 'top-right';
 
