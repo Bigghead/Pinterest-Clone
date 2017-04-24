@@ -6,6 +6,7 @@ import LocalLogin from '../components/LocalLogin.vue'
 import Images from '../components/Images.vue'
 import Register from '../components/Register.vue'
 import UserImages from '../components/UserImages.vue';
+import MasonryTest from '../components/masonryTest.vue';
 
 Vue.use(Router)
 
@@ -30,7 +31,7 @@ export default new Router({
     },
     {
       path: '/images/:userID',
-      component: UserImages
+      component: MasonryTest
     }
   ]
 })

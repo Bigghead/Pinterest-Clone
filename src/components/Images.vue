@@ -11,17 +11,23 @@
       </form>
 
     </div>
-    <div class="row">
-      <div class="col m3 s12" v-for="image in images">
+    <div class="grid">
+      <div class="grid-item" v-for="image in images">
         <div class="card">
-          <div class="card-image">
+          <div class="card-image" :class='randomGrid()'>
             <img v-bind:src="image.link">
           </div>
           <div class="card-action">
             <a href="#" v-if='user'>Likes: {{ image.likedBy.length}}</a>
             <a v-else class='disabled'>Likes : {{ image.likedBy.length }}</a>
-            <a href="#" v-if='user && image.addedById === user._id' v-on:click.prevent='deleteImage(image._id)'>Delete</a>
-            <router-link :to="'/images/' + image.addedById " v-else>Pinned By: {{ image.addedBy }}</router-link>
+            <hr>
+            <div v-if='user && image.addedById === user._id'>
+              <a href="#" v-on:click.prevent='deleteImage(image._id)'><br>Delete</a>
+            </div>
+            <div v-else>
+              <router-link :to="'/images/' + image.addedById "><br>{{ image.addedBy }}</router-link>
+
+            </div>
           </div>
         </div>
       </div>
@@ -57,6 +63,12 @@
       deleteImage(id) {
         let vm = this;
         this.$store.dispatch('deleteImage', id);
+      },
+      randomGrid() {
+        // const gridLayout = ['grid-item', 'grid-item grid-item--height2', 'grid-item grid-item--width2'];
+        const gridLayout = ['grid-item--height1', 'grid-item--height2', 'grid-item--height3'];
+
+        return gridLayout[Math.floor(Math.random() * gridLayout.length)];
       }
     },
     created() {
@@ -65,6 +77,7 @@
       };
     }
   };
+
 </script>
 
 <style lang="css" scoped>
@@ -82,12 +95,28 @@
     margin-top: 5%;
   }
   
-  img {
+  /*img {
     height: 225px;
-  }
+  }*/
   
   .disabled {
     pointer-events: none;
     cursor: default;
   }
+  
+  .grid {
+    /* Masonry container */
+    column-count: 5;
+    column-gap: 1em;
+  }
+  
+  .grid-item {
+    /* Masonry bricks or child elements */
+    background-color: #eee;
+    display: inline-block;
+    margin: 0 0 1em;
+    width: 100%;
+  }
+
+  
 </style>
