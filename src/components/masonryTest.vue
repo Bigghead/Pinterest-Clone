@@ -57,24 +57,7 @@
 </script>
 
 <style scoped>
-    /*.grid-item {
-        width: 200px;
-    }*/
-    /*.grid-item--width2 {
-        width: 400px;
-    }*/
-    
-    /*.grid-item--height1 {
-        height: 200px;
-    }
-    
-    .grid-item--height2 {
-        height: 240px;
-    }
-    
-    .grid-item--height3 {
-        height: 300px;
-    }*/
+
 
     .grid { /* Masonry container */
     column-count: 5;

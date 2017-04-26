@@ -105,6 +105,7 @@
   }
   
   .grid {
+    
     /* Masonry container */
     column-count: 5;
     column-gap: 1em;
