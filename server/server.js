@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const mongoose   = require('mongoose');
 const path       = require('path');
-const Keys       = require('../apiKeys');
+//const Keys       = require('../apiKeys');
 const axios      = require('axios');
 const jwt        = require('jsonwebtoken');
 const passport   = require("passport");
@@ -18,7 +18,7 @@ var reqUser;
 mongoose.Promise = global.Promise;
 
 //mongoose connect
-mongoose.connect(`mongodb://${Keys.mlabUser}:${Keys.mlabPass}@ds113670.mlab.com:13670/pinterest`);
+mongoose.connect(`mongodb://${process.env.mlabUser}:${process.env.mlabPass}@ds113670.mlab.com:13670/pinterest`);
 
 //Model Requires
 const User = require('./models/User.js');
@@ -46,7 +46,7 @@ app.use(serveStatic(path.join(__dirname, '../dist')));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(session({
-  secret: Keys.sessionSecret,
+  secret: process.env.sessionSecret,
   resave: false,
   saveUninitialized: false,
 }));
@@ -65,10 +65,10 @@ passport.deserializeUser(function(user, done) { done(null, user) });
 
 //=========AUTH0 STRATEGY=========
 const auth0Strategy = new Auth0Strategy({
-    domain:       Keys.authDomain,
-    clientID:     Keys.auth0Client,
-    clientSecret: Keys.auth0Secret,
-    callbackURL:  Keys.authCallback
+    domain:       process.env.authDomain,
+    clientID:     process.env.auth0Client,
+    clientSecret: process.env.auth0Secret,
+    callbackURL:  process.env.authCallback
   }, function(accessToken, refreshToken, extraParams, profile, done) {
     // accessToken is the token to call Auth0 API (not needed in the most cases)
     // extraParams.id_token has the JSON Web Token
