@@ -11,14 +11,14 @@
       </form>
 
     </div>
-    <div class="grid">
+    <div class="grid ">
       <div class="grid-item" v-for="image in images">
         <div class="card">
           <div class="card-image" :class='randomGrid()'>
             <img v-bind:src="image.link">
           </div>
           <div class="card-action">
-            <a href="#" v-if='user' v-on:click='addOrRemoveLike(image._id)'>Likes: {{ image.likedBy.length}}</a>
+            <a href="#" v-if='user' v-on:click.prevent='addOrRemoveLike(image._id)'>Likes: {{ image.likedBy.length}}</a>
             <a v-else class='disabled'>Likes : {{ image.likedBy.length }}</a>
             <hr>
             <div v-if='user && image.addedById === user._id'>
@@ -109,7 +109,8 @@
   }
   
   .grid {
-    margin-top: 25px;
+    margin: 25px auto 0 auto;
+    width: 95%;
     
     /* Masonry container */
     column-count: 5;
@@ -123,6 +124,44 @@
     margin: 0 0 1em;
     width: 100%;
   }
+
+  @media only screen and (min-width: 400px) {
+    .grid {
+        -moz-column-count: 2;
+        -webkit-column-count: 2;
+        column-count: 2;
+    }
+}
+
+@media only screen and (min-width: 700px) {
+    .grid {
+        -moz-column-count: 3;
+        -webkit-column-count: 3;
+        column-count: 3;
+    }
+}
+
+@media only screen and (min-width: 900px) {
+    .grid {
+        -moz-column-count: 4;
+        -webkit-column-count: 4;
+        column-count: 4;
+    }
+}
+
+@media only screen and (min-width: 1100px) {
+    .grid {
+        -moz-column-count: 5;
+        -webkit-column-count: 5;
+        column-count: 5;
+    }
+}
+
+@media only screen and (min-width: 1280px) {
+    .wrapper {
+        width: 1260px;
+    }
+}
 
   
 </style>

@@ -9,7 +9,7 @@ export default new Vuex.Store({
     user: null,
     images: []
   },
-  
+
   mutations: {
     setUserState: function (state, userData) {
       state.user = userData;
@@ -30,11 +30,10 @@ export default new Vuex.Store({
         }
       });
     },
-    addOrRemoveLike(state, imageId){
-      console.log(imageId);
+    addOrRemoveLike(state, imageId) {
       state.images.forEach((image, index) => {
-        if(image._id === imageId){
-          if(image.likedBy.indexOf(state.user._id) === -1){
+        if (image._id === imageId) {
+          if (image.likedBy.indexOf(state.user._id) === -1) {
             image.likedBy.push(state.user._id);
           } else {
             image.likedBy.splice(image.likedBy.indexOf(state.user._id))
@@ -43,21 +42,12 @@ export default new Vuex.Store({
       });
     }
   },
-  
+
   actions: {
     setUserState(context, userData) {
-
-      //if (window.localStorage.getItem("myData") === null || window.localStorage.getItem("myData") === '""') {
-      //if (context.state.user === null || context.state.user === '') {
-        axios.get('http://localhost:8000/verifyUser').then((res) => {
-          //window.localStorage.setItem('myData', JSON.stringify(res.data))
-          context.commit('setUserState', res.data);
-        });
-      //}
-      // } else {
-      //   context.commit('fetchUserData', JSON.parse(window.localStorage.getItem("myData")))
-      // }
-
+      axios.get('http://localhost:8000/verifyUser').then((res) => {
+        context.commit('setUserState', res.data);
+      });
     },
     setImages(context, imageData) {
       axios.get('http://localhost:8000/images').then((res) => {
@@ -80,15 +70,13 @@ export default new Vuex.Store({
         console.log(err);
       });
     },
-    addOrRemoveLike(context, imageId){
-      console.log(imageId);
+    addOrRemoveLike(context, imageId) {
       axios.post(`http://localhost:8000/images/${imageId}`)
-            .then(res => {
-              console.log('hi');
-              context.commit('addOrRemoveLike', imageId);
-            }).catch(err => {
-              console.log(err);
-            })
+          .then(res => {
+          context.commit('addOrRemoveLike', imageId);
+        }).catch(err => {
+          console.log(err);
+        })
     },
     logOut(context) {
       axios.get('http://localhost:8000/logout')

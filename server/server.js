@@ -251,7 +251,6 @@ app.post('/images/:id', (req, res) => {
       image.markModified('likedBy');
     }
     image.save().then(() => {
-      console.log(image);
       res.status(200).send('Success');
     });
   });
