@@ -240,6 +240,23 @@ app.post('/images/delete', ((req, res) =>{
     });
 }));
 
+app.post('/images/:id', (req, res) => {
+  Images.findByIdAndUpdate(req.params.id, {new: true }, (err, image) =>{
+    if(err) console.log(err);
+    if(image.likedBy.indexOf(req.user._id) === -1){
+      image.likedBy.push(req.user._id);
+      image.markModified('likedBy');
+    } else {
+      image.likedBy.splice(image.likedBy.indexOf(req.user._id));
+      image.markModified('likedBy');
+    }
+    image.save().then(() => {
+      console.log(image);
+      res.status(200).send('Success');
+    });
+  });
+});
+
 app.get('/images/:userId', ((req, res) => {
   User.findById(req.params.userId).exec((err, foundUser) => {
     if(err) res.status(400).send('No User Found');

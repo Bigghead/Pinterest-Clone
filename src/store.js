@@ -29,6 +29,18 @@ export default new Vuex.Store({
           state.images.splice(index, 1);
         }
       });
+    },
+    addOrRemoveLike(state, imageId){
+      console.log(imageId);
+      state.images.forEach((image, index) => {
+        if(image._id === imageId){
+          if(image.likedBy.indexOf(state.user._id) === -1){
+            image.likedBy.push(state.user._id);
+          } else {
+            image.likedBy.splice(image.likedBy.indexOf(state.user._id))
+          }
+        }
+      });
     }
   },
   
@@ -67,6 +79,16 @@ export default new Vuex.Store({
       }).catch(err => {
         console.log(err);
       });
+    },
+    addOrRemoveLike(context, imageId){
+      console.log(imageId);
+      axios.post(`http://localhost:8000/images/${imageId}`)
+            .then(res => {
+              console.log('hi');
+              context.commit('addOrRemoveLike', imageId);
+            }).catch(err => {
+              console.log(err);
+            })
     },
     logOut(context) {
       axios.get('http://localhost:8000/logout')

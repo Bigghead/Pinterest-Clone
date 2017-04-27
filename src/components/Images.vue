@@ -18,7 +18,7 @@
             <img v-bind:src="image.link">
           </div>
           <div class="card-action">
-            <a href="#" v-if='user'>Likes: {{ image.likedBy.length}}</a>
+            <a href="#" v-if='user' v-on:click='addOrRemoveLike(image._id)'>Likes: {{ image.likedBy.length}}</a>
             <a v-else class='disabled'>Likes : {{ image.likedBy.length }}</a>
             <hr>
             <div v-if='user && image.addedById === user._id'>
@@ -69,6 +69,10 @@
         const gridLayout = ['grid-item--height1', 'grid-item--height2', 'grid-item--height3'];
 
         return gridLayout[Math.floor(Math.random() * gridLayout.length)];
+      },
+
+      addOrRemoveLike(id){
+        this.$store.dispatch('addOrRemoveLike', id);
       }
     },
     created() {
@@ -105,6 +109,7 @@
   }
   
   .grid {
+    margin-top: 25px;
     
     /* Masonry container */
     column-count: 5;
