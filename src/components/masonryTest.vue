@@ -3,7 +3,7 @@
 
         <h1 class="center-align">All Images By {{ userImages[0].addedBy  }}</h1>
         <!--<img v-for='image in userImages' class='grid-item' v-bind:src="image.link" alt="">-->
-        <div class="grid" >
+        <div class="grid center-align" >
             <div class="grid-item" v-for='image in userImages'  >
                 <div class="card" >
                     <div class="card-image" >
@@ -29,6 +29,7 @@
             console.log(this.$route.params.userID);
             axios.get('http://localhost:8000/images/' + this.$route.params.userID)
                 .then(res => {
+                    console.log(res.data);
                     vm.userImages = res.data;
                 });
         }
@@ -51,7 +52,7 @@
   .grid-item {
     /* Masonry bricks or child elements */
     background-color: #eee;
-    display: inline-block;
+    display: block;
     margin: 0 0 1em;
     width: 100%;
   }

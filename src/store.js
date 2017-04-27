@@ -71,7 +71,7 @@ export default new Vuex.Store({
       });
     },
     addOrRemoveLike(context, imageId) {
-      axios.post(`http://localhost:8000/images/${imageId}`)
+      axios.post(`http://localhost:8000/images/${imageId}/update`)
           .then(res => {
           context.commit('addOrRemoveLike', imageId);
         }).catch(err => {
