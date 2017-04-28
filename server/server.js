@@ -11,6 +11,7 @@ const Auth0Strategy       = require('passport-auth0');
 const session             = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const serveStatic = require('serve-static');
+const path        =require('path');
 
 
 const app = express();
@@ -101,9 +102,11 @@ passport.use(auth0Strategy);
 //USE ROUTES
 app.use(userRoutes);
 app.use(authRoutes);
+app.use(serveStatic(path.join(__dirname, ‘dist’)));
 
-app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, '../index.html'));
-});
+
+// app.get('/', function(req, res) {
+//   res.sendFile(path.join(__dirname, '../index.html'));
+// });
 
 app.listen(process.env.PORT, () => console.log('Pinterest Starting!'));

@@ -1,0 +1,13 @@
+const Keys = {
+  auth0Client : 'FXejolznkgCwYhkzb1de2I0muFUZHgne',
+  authDomain : 'book-trading-app.auth0.com',
+  auth0Secret: 'hOE28_KKDJ-6FnB5zz1AO_LKXEcKMSeRCd93tyoJ_gmNNAbM858rHmccUnQflhzr',
+  authCallback : 'http://localhost:8000/auth/callback',
+  mlabUser: 'Bigghead',
+  mlabPass: 'fdas886',
+  twitterKey: 'YK2zEIoFt3g7ptXfeKc1qD90x',
+  twitterSecret: '8BT8660qLckjmZpAU3RhuR0VpmUHNUG5UtEErqTkTTqcnCCTWf',
+  sessionSecret: 'This dude says hi'
+};
+
+module.exports = Keys;
