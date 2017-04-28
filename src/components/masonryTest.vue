@@ -27,7 +27,7 @@
         created() {
             const vm = this;
             console.log(this.$route.params.userID);
-            axios.get('http://localhost:8000/images/' + this.$route.params.userID)
+            axios.get('https://blooming-everglades-99212.herokuapp.com/images/' + this.$route.params.userID)
                 .then(res => {
                     console.log(res.data);
                     vm.userImages = res.data;

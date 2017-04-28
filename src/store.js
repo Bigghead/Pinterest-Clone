@@ -45,24 +45,24 @@ export default new Vuex.Store({
 
   actions: {
     setUserState(context, userData) {
-      axios.get('http://localhost:8000/verifyUser').then((res) => {
+      axios.get('https://blooming-everglades-99212.herokuapp.com/verifyUser').then((res) => {
         context.commit('setUserState', res.data);
       });
     },
     setImages(context, imageData) {
-      axios.get('http://localhost:8000/images').then((res) => {
+      axios.get('https://blooming-everglades-99212.herokuapp.com/images').then((res) => {
         context.commit('setImages', res.data);
       });
     },
     addNewImage(context, newImage) {
-      axios.post('http://localhost:8000/images/new', {
+      axios.post('https://blooming-everglades-99212.herokuapp.com/images/new', {
         link: newImage
       }).then((res) => {
         context.commit('addNewImage', res.data);
       });
     },
     deleteImage(context, imageId) {
-      axios.post('http://localhost:8000/images/delete', {
+      axios.post('https://blooming-everglades-99212.herokuapp.com/images/delete', {
         imageId
       }).then(res => {
         context.commit('deleteImage', imageId);
@@ -71,7 +71,7 @@ export default new Vuex.Store({
       });
     },
     addOrRemoveLike(context, imageId) {
-      axios.post(`http://localhost:8000/images/${imageId}/update`)
+      axios.post(`https://blooming-everglades-99212.herokuapp.com/images/${imageId}/update`)
           .then(res => {
           context.commit('addOrRemoveLike', imageId);
         }).catch(err => {
@@ -79,7 +79,7 @@ export default new Vuex.Store({
         })
     },
     logOut(context) {
-      axios.get('http://localhost:8000/logout')
+      axios.get('https://blooming-everglades-99212.herokuapp.com/logout')
         .then(() => {
           localStorage.removeItem('myData');
         });
