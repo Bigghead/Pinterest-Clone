@@ -2,7 +2,7 @@
   <div class="">
     <nav class='grey darken-4'>
       <div class="nav-wrapper">
-        <a href="#" class="brand-logo left hide-on-small-only">Pinterest Stuff</a>
+        <a href="#" class="brand-logo left hide-on-small-only">Pinterest Clone</a>
         <ul id="nav-mobile" class="right ">
 
         <template v-if='user'>
