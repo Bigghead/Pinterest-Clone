@@ -9,6 +9,7 @@ const jwt        = require('jsonwebtoken');
 const passport   = require("passport");
 const Auth0Strategy       = require('passport-auth0');
 const session             = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 const serveStatic = require('serve-static');
 
 
@@ -49,6 +50,7 @@ app.use(session({
   secret: process.env.sessionSecret,
   resave: false,
   saveUninitialized: false,
+  store: new MongoStore
 }));
 
 app.use(passport.initialize());
