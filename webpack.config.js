@@ -11,9 +11,11 @@ module.exports = {
   },
   output: {
      // To the `dist` folder
-     path: './dist',
+     //path: './dist',
+     path: './',
      // With the filename `build.js` so it's dist/build.js
-     filename: 'build.js'
+     //filename: 'build.js'
+     filename: 'index.html'
    },
    plugins: [new HtmlWebpackPlugin({
      filename: 'index.html',
