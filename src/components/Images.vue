@@ -4,7 +4,7 @@
 
     <div v-if='user'>
       <form v-on:submit.prevent='addNewImage'>
-        <input type="text" name="" value="" v-model='imageLink'>
+        <input type="text" name="" value="" v-model='imageLink' placeholder='Enter an image link'>
         <div class="">
           <button type="button" name="button" class='waves-effect waves-light btn' v-on:click.prevent='addNewImage'>Pin A New Image</button>
         </div>
