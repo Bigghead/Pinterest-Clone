@@ -101,11 +101,11 @@ passport.use(auth0Strategy);
 //USE ROUTES
 app.use(userRoutes);
 app.use(authRoutes);
-app.use(serveStatic(path.join(__dirname, ‘dist’)));
+//app.use(serveStatic(path.join(__dirname, ‘dist’)));
 
 
-// app.get('/', function(req, res) {
-//   res.sendFile(path.join(__dirname, '../index.html'));
-// });
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, '../index.html'));
+});
 
 app.listen(process.env.PORT, () => console.log('Pinterest Starting!'));
