@@ -4,12 +4,28 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
-Vue.config.productionTip = false
+//=========COMPONENTS==
+import Header from './components/partials/Header.vue';
+
+//=========VUEX========
+import store from './store.js';
+
+//=========VUE MASONRY===
+import VueMasonryPlugin from 'vue-masonry';
+Vue.use(VueMasonryPlugin);
+
+//alertify dialog position
+//alertify.defaults.notifier.position = 'top-right';
 
 /* eslint-disable no-new */
+
 new Vue({
-  el: '#app',
+  el: '#root',
+  data: {
+    message: 'Hello Vue'
+  },
   router,
+  store: store,
   template: '<App/>',
   components: { App }
-})
+});
