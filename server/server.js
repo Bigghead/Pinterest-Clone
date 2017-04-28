@@ -50,7 +50,7 @@ app.use(session({
   secret: process.env.sessionSecret,
   resave: false,
   saveUninitialized: false,
-  store: new MongoStore
+  store: new MongoStore( { mongooseConnection: mongoose.connection } )
 }));
 
 app.use(passport.initialize());
