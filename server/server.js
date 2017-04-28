@@ -11,7 +11,6 @@ const Auth0Strategy       = require('passport-auth0');
 const session             = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const serveStatic = require('serve-static');
-const path        =require('path');
 
 
 const app = express();
