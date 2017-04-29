@@ -2,9 +2,9 @@
   <div id='homepage'>
     <h1>Welcome to My Pinterest Clone</h1>
     <hr>
-    <div class="" v-if='user'>
+    <!--<div class="" v-if='user'>
       <h3>Welcome, {{user.username}}</h3>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -37,7 +37,7 @@ export default {
     font-family: Amaranth;
   }
   #homepage{
-    margin: 10% auto;
+    margin: 20% auto;
     text-align: center;
   }
 </style>

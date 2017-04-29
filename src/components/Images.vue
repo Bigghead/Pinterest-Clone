@@ -1,6 +1,6 @@
 <template lang="html">
   <div class=" images">
-    <h2>Images</h2>
+    <h2>All Images</h2>
 
     <div v-if='user'>
       <form v-on:submit.prevent='addNewImage'>

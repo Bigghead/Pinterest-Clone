@@ -13,7 +13,7 @@
 
         <template v-else>
           <li><a href='https://blooming-everglades-99212.herokuapp.com/auth'>Log In!</a></li>
-          <li><router-link :to="'/images'">All Images</router-link></li>
+          <li><router-link :to="'/images'">Pins</router-link></li>
           <!-- <li><a href='http://localhost:8000/logout'>Log Out</a></li> -->
         </template>
 
