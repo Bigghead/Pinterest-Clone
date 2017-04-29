@@ -125,6 +125,14 @@
     width: 100%;
   }
 
+    @media only screen and (min-width: 200px) {
+    .grid {
+        -moz-column-count: 2;
+        -webkit-column-count: 2;
+        column-count: 2;
+    }
+}
+
   @media only screen and (min-width: 400px) {
     .grid {
         -moz-column-count: 2;
