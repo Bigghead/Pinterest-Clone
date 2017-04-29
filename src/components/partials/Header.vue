@@ -7,7 +7,7 @@
 
         <template v-if='user'>
           <li><router-link :to="`/images/${user._id}`">{{user.username}}</router-link></li>
-          <li><router-link :to="'/images'">All Images</router-link></li>
+          <li><router-link :to="'/images'">Pins</router-link></li>
           <li><a href='https://blooming-everglades-99212.herokuapp.com/logout' v-on:click='logOut'>Log Out</a></li>
         </template>
 
