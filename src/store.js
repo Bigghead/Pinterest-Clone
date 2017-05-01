@@ -36,7 +36,7 @@ export default new Vuex.Store({
           if (image.likedBy.indexOf(state.user._id) === -1) {
             image.likedBy.push(state.user._id);
           } else {
-            image.likedBy.splice(image.likedBy.indexOf(state.user._id))
+            image.likedBy.splice(image.likedBy.indexOf(state.user._id), 1)
           }
         }
       });

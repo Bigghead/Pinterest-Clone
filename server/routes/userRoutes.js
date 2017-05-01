@@ -60,7 +60,7 @@ Router.post('/images/:id/update', (req, res) => {
       image.likedBy.push(req.user._id);
       image.markModified('likedBy');
     } else {
-      image.likedBy.splice(image.likedBy.indexOf(req.user._id));
+      image.likedBy.splice(image.likedBy.indexOf(req.user._id), 1);
       image.markModified('likedBy');
     }
     image.save().then(() => {
