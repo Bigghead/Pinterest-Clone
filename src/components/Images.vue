@@ -125,6 +125,10 @@
     width: 100%;
   }
 
+  .grid-item-1{
+    width: 40%;
+  }
+
     @media only screen and (min-width: 200px) {
     .grid {
         -moz-column-count: 2;

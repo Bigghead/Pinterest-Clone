@@ -19,6 +19,11 @@
 </script>
 
 <style>
+
+  html, body{
+    height: 100%;
+  }
+  
   body {
     color: white;
     background: #0B486B;
