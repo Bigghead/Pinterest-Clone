@@ -6,7 +6,6 @@ const passport = require('passport');
 // =========AUTH0 LOGIN=======
 Router.get('/auth',
   passport.authenticate('auth0'), function(req, res){
-    console.log('Testing Auth, 1');
   });
 
 Router.get('/auth/callback',

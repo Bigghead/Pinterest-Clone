@@ -4,7 +4,6 @@ const User = require('../models/User.js');
 const Images = require('../models/Images.js');
 
 Router.get('/verifyUser', ((req, res) => {
-  console.log('Hitting verify route: ' + req.user);
   res.send(req.user);
 }));
 
@@ -40,7 +39,6 @@ Router.post('/images/new', ((req, res) => {
 }));
 
 Router.post('/images/delete', ((req, res) => {
-  console.log(req.body.imageId);
   Images.findByIdAndRemove(req.body.imageId,
     function (err, image) {
       if (err) console.log(err);

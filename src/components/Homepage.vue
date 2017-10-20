@@ -24,7 +24,6 @@ export default {
   },
   methods:{
     verifyUser(){
-      console.log(this.$store);
       this.user = this.$store.state.user;
     }
   }

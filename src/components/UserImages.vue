@@ -39,7 +39,6 @@
             'waterfall-slot': WaterfallSlot
         },
         created() {
-            console.log(this.$route.params.userID);
             const vm = this;
 
             axios.get('http://localhost:8000/images/' + this.$route.params.userID)
