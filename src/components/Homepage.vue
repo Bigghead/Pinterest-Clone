@@ -39,4 +39,8 @@ export default {
     margin: 20% auto;
     text-align: center;
   }
+
+  .card{
+    margin: 0;
+  }
 </style>
